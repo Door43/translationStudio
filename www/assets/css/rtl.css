@@ -1,0 +1,22 @@
+/* Right-to-left */
+
+
+/* Translation Form */
+
+
+body.translation_rtl form#translate_story_title input,
+body.translation_rtl form#translate_story_title textarea,
+body.translation_rtl form#update_translate_story_title input,
+body.translation_rtl form#update_translate_story_title textarea,
+body.translation_rtl #wrap_translation_form form {
+  direction: rtl;  /* Right to Left */
+  unicode-bidi: embed;
+}
+body.translation_rtl #wrap_translation_form form+cite {
+	display: inline;
+	right: inherit;
+	left: 20px;
+	box-sizing: border-box;
+	width: 50px;
+	overflow: visible;	
+}

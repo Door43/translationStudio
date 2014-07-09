@@ -1,0 +1,7 @@
+div#translation_resources_panel,
+div#profile_panel,
+div#settings_panel,
+div#share_panel,
+div#selection_panel {
+	min-width: 100%;
+}

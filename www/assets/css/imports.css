@@ -1,0 +1,23 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900);
+
+@import url("translator/styles.css");
+
+@import url("dialog.css");
+@import url("main.css");
+
+@import url("rtl.css");
+
+/* from 0 to 1000px */
+/* @import url("new/max1000.css") screen and (max-width: 1000px); */
+
+/* from 0 to 800px */
+/* @import url("new/max800.css") screen and (max-width: 800px); */
+
+/* from 0 to 600px */
+@import url("max600.css") screen and (max-width: 600px);
+
+/* from 0 to 480px */
+@import url("max480.css") screen and (max-width: 480px);
+
+/* high resolution */
+/* @import url("hires.css") screen and (-webkit-min-device-pixel-ratio: 1.5), screen and (min--moz-device-pixel-ratio: 1.5), screen and (min-resolution: 240dpi); */
