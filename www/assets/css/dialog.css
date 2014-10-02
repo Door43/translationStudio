@@ -1,0 +1,167 @@
+#dialog {
+	position: absolute;
+	display: none;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 900;
+	text-align: center;
+}
+body.show_dialog main {
+	-webkit-filter: blur(3px);
+}
+body.show_dialog #dialog {
+	display: table;
+}
+
+#dialog > div {
+	background: rgba(0,0,0,.4);
+	display: table-cell;
+	vertical-align: middle;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+#dialog > div > section {
+	width: 100%;
+	max-width: 400px;
+	margin: auto;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,.4);
+	border: 1px solid rgba(0,0,0,.6);
+	background: #F4F1F2;
+}
+#dialog > div > section header {
+	padding-top: 0;
+	background: #332D2F;
+	color: white;
+	height: 44px;
+	position: relative;
+}
+#dialog > div > section header a{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: block;
+	width: 32px;
+	height: 32px;
+}
+#dialog > div > section header h1{
+	margin: 0;
+	font-weight: 300;
+	font-size: 22px;
+	padding-top: 5px;
+	line-height: 1.5em;
+}
+#dialog > div > section header h1 i{
+	position: relative;
+	top: 5px;
+	margin-right: 7px;
+}
+#dialog > div > section hgroup {
+	margin: 10px;
+	height: 54px;
+	position: relative;
+	text-align: center;	
+}
+#dialog > div > section hgroup a{
+	width: 48.5%;
+	display: inline-block;
+	margin: 0;
+	box-sizing:border-box;
+/* 	bottom: 0; */
+/* 	position: absolute; */
+/* 	left: 0; */
+	padding: 14px 0;
+	box-shadow: inset 0 0 0 1px #1da9da;
+	color: #1da9da;
+/* 	border-radius: 50px;	 */
+}
+#dialog > div > section hgroup a:last-child{
+/*
+	right: 0;
+	left: inherit;
+*/
+}
+
+#dialog > div > section hgroup a i {
+	position: relative;
+	top: 2px;
+	margin-right: 7px;
+}
+
+#dialog > div > section hgroup a.yes{
+	background: #f15e22;
+	background: #1da9da;
+	color: white;
+	outline: none;
+}
+#dialog > div > section p {
+	margin: 30px 13px; 
+}
+#dialog > div > section p a {
+	color: #1da9da;
+	border-bottom: 1px dotted #1da9da;
+}
+
+
+
+#dialog form {
+	text-align: left;
+	margin-top: -20px;
+	margin-bottom: -20px;
+}
+#dialog form label {
+	display: block;
+	font-size: .8em;
+	font-weight: 100;
+	margin-top: 5px;
+	margin-bottom: 0;
+	padding: 7px 0;
+}
+#dialog form label strong{
+	font-size: 1.2em;
+}
+#dialog form input,
+#dialog form textarea {
+	font-size: 1.2em;
+	background: transparent;
+	width: 100%;
+	border: 1px solid silver;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media all and (max-width: 400px){
+	#dialog > div > section {
+		width: auto;
+		max-width: auto;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+}

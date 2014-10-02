@@ -1,0 +1,1157 @@
+<!doctype html> 
+<html lang="en"> 
+<head>
+<meta charset="utf-8">
+<title>Translation Studio</title> 
+ 
+
+<!-- IE meta -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+
+
+<!-- iPhone Settings -->
+<!-- Not letterboxed on iPhone 5 -->
+<meta name="viewport" content="width=320.1, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- iPhone images http://taylor.fausak.me/2012/03/27/ios-web-app-icons-and-startup-images/ -->
+<link rel="apple-touch-icon-precomposed" href="assets/img/apple-touch-icon.png" />
+<!-- <link rel="apple-touch-startup-image" href="assets/img/apple-loading-image.png" /> -->
+
+
+
+<link rel="stylesheet" href="assets/css/imports.css">
+
+<script src="assets/js/jquery-2.1.1.min.js"></script>
+
+<script src="cordova.js"></script> 
+<script src="assets/js/common.js"></script> 
+<script src="assets/js/init.js"></script> 
+<script src="assets/js/database.js"></script> 
+<script src="assets/js/dialog.js"></script> 
+<script src="assets/js/projects.js"></script> 
+<script src="assets/js/books.js"></script> 
+<script src="assets/js/stories.js"></script> 
+<script src="assets/js/frames.js"></script> 
+<script src="assets/js/resources.js"></script> 
+<script src="assets/js/share.js"></script> 
+<script src="assets/js/settings.js"></script> 
+<script src="assets/js/profile.js"></script> 
+<script src="assets/js/hash.js"></script> 
+<script src="assets/js/translate.js"></script> 
+<script src="assets/js/jquery.mustache.js"></script> 
+<script src="assets/js/mustache.min.js"></script> 
+<script src="assets/js/config.js"></script> 
+<script src="assets/js/tabs.js"></script> 
+<script src="assets/js/jquery.touchSwipe.min.js"></script> 
+<script src="assets/js/update_source.js"></script> 
+<script src="assets/js/custom.js"></script> 
+
+
+
+
+
+
+<script src="assets/js/debug.js"></script> 
+<link rel="stylesheet" href="assets/css/debug.css">
+
+
+
+
+
+
+</head>
+
+<body class="show_selections _hide_translation_nav">
+
+<main>
+
+	<div id="center_panel">
+	
+		<header>
+			
+			<nav>
+				<a id="toggle_menu" href="#"><i class="i-menu"></i><i class="i-close"></i></a>
+<!-- 				<a id="open_projects" href="#projects"><i class="i-drawer"></i></a> -->
+				<a id="open_selections" data-href="#books" href="#stories/in/obs"><i class="i-books"></i></a>
+				<a id="open_profile" href="#profile"><i class="i-user"></i></a>
+				<a id="open_debug" href="#"><i class="i-bug"></i></a>
+			</nav>
+			
+			<h1><a href="#" id="open_story_info"><big>Translation</big><small>Studio</small></a></h1>
+			
+			<nav class="right">
+				<a id="share" href="#share/recent"><i class="i-share"></i></a>
+				<a id="settings" href="#settings"><i class="i-cog"></i></a>
+				<a id="resource_notes" href="#resources/at"><i class="i-light"></i></a>
+			</nav>
+						
+		</header>
+		
+		
+		<section class="column" id="wrap_source_text">
+		
+
+			<article class="scroll">
+			
+				<div id="source_text">
+				
+
+
+					<p>
+					</p>	
+					
+					<cite></cite>
+					
+				</div>
+			
+			</article>
+			
+			<nav>
+				<a href="#"><i class="i-left"></i><i class="i-text-document"></i><i class="i-open-book"></i></a>
+				<a href="#"><i class="i-info"></i><i class="i-text-document"></i><i class="i-right"></i></a>
+			</nav>
+
+		</section>
+		
+		<section class="column" id="wrap_translation_form" >
+		
+			<article class="scroll">
+				
+				<form id="translation">
+				
+<!-- 					<input type="hidden" value="insert" id="submit_type" name="submit_type"/> -->
+				
+					<input type="hidden" value="" id="story_hash" name="story_hash"/>
+					<input type="hidden" value="" id="frame_hash" name="frame_hash"/>
+				
+					<input type="hidden" value="" id="story_title" name="story_title"/>
+					<input type="hidden" value="" id="story_ref" name="story_ref"/>
+
+				
+				
+					<textarea id="frame_text" name="frame_text" placeholder="Enter translation here."></textarea>
+									
+				</form>
+				
+				<cite>Language</cite>
+			
+			</article>
+			
+			<button id="submit_form_translation" ><i class="i-disk-upload"></i><span></span></button>
+			
+			<nav class="history">
+			
+				<a href="#" class="back"><i class="i-undo"></i><i class="i-open-book"></i></a>
+				<a href="#" class="forward"><i class="i-redo"></i></a>
+			
+			</nav>
+			
+		</section>
+		
+		<a href="#" id="toggle_full_screen"><i class="i-fullscreen"></i></a>
+		
+		<a href="#" id="toggle_full_screen_b">
+			
+			<span>[01-01]</span>
+			<span>French</span>
+			
+		</a>
+	
+	</div>
+
+
+	
+	<div id="selection_panel" class="hide_left">
+	
+<!--
+		<header>
+			
+			<span>
+				<a href="#">M</a>
+				<a href="#">M</a>
+				<a href="#">M</a>
+			</span>
+			
+			<h1>Title</h1>
+			
+			<span>
+				<a href="#">M</a>
+				<a href="#">M</a>
+				<a href="#">M</a>
+			</span>
+			
+		</header>
+-->
+		
+		
+		<span class="tabs" data-tabs-controls="selections">
+		
+			<a href="#books" data-tab="book" style="display:none;"><i class="i-book"></i></a>
+			<a class="active" href="#stories/in/obs" data-tab="story"><i class="_i-story i-open-book"></i></a>
+			<a href="#frames/in/obs/01"  data-tab="frame"><i class="i-text-document"></i></a>
+					
+
+		</span>
+		
+		<a id="close_selections" href="#"><i class="i-close"></i></a>
+		
+		<article class="scroll" data-tabs-controls-content="selections" data-tab-content="book">
+		
+			<ul>
+
+				
+				<li>
+					<a href="#stories/in/obs" class="_active"  data-book="obs">
+					
+						<figure></figure>
+						
+						<em><i class="i-right"></i></em>
+						
+						<hgroup>
+							
+							<h1>Open Bible Stories</h1>
+							<h2>Unfolding Word</h2>
+						
+						</hgroup>
+						
+					</a>
+				</li>
+				
+			</ul>
+		
+		</article>
+		
+	
+		<article class="scroll" data-tabs-controls-content="selections" data-tab-content="story">
+		
+				
+			<ul id="put-story-list" data-book="obs" >
+				
+				
+				
+			</ul>
+			
+			<script id="story-list" type="text/html">
+			
+				<li>
+					<a href="#frames/in/obs/{{number}}" data-story="{{number}}">
+					
+						<figure style="background-image: url('assets/img/100/obs-en-{{number}}-01.jpg')"></figure>
+						
+						<em><i class="i-right"></i><i class="i-wrench"></i></em>
+						
+						<hgroup>
+							
+							<h1>{{title}}</h1>
+							<h2>{{ref}}</h2>
+						
+						</hgroup>
+						
+					</a>
+				</li>		
+						
+			</script>
+		
+		</article>
+		
+	
+		<article class="scroll" data-tabs-controls-content="selections" data-tab-content="frame">
+		
+			<ul id="put-frame-list">
+				
+				
+				
+				
+			</ul>
+			
+			<script id="frame-list" type="text/html">
+			
+				<li>
+					<a href="#translate/index/en/obs/{{story}}/{{frame}}" data-frame="{{frame}}">
+					
+						
+						
+						<em><i class="i-right"></i><i class="i-wrench"></i></em>
+						
+						<hgroup>
+							
+							<article>
+							
+								<figure style="background-image: url('assets/img/100/obs-en-{{id}}.jpg')"></figure>
+							
+								<strong>[{{id}}]</strong>
+							
+								{{text}}
+							
+							</article>
+						
+						</hgroup>
+						
+					</a>
+				</li>		
+						
+			</script>
+			
+			
+			
+		
+		</article>
+		
+		
+		
+		
+	
+	</div>
+	
+
+
+
+	<div id="translation_resources_panel" style="display:none;" class="hide_right">
+	
+		<header>
+			
+			<nav>
+				<a id="close_resources" href="#translate/index/en/obs/01/01"><i class="i-close"></i></a>
+				<a id="resource_home" href="#"><i class="i-home"></i></a>
+			</nav> 
+			
+			<h1>Resources</h1>
+			
+			<nav class="right">
+				<a id="resource_back" class="true_back" href="#"><i class="i-left"></i></a>
+				<a id="resource_forward" class="true_forward" href="#"><i class="i-right"></i></a>
+			</nav>
+			
+		</header>
+	
+		<article class="scroll">
+		
+			
+			
+			
+		
+		</article>
+
+
+	</div>
+
+
+	<div id="projects_panel" class="hide_left">
+	
+		
+		
+		<section class="sub_panel hide_right" style="display:none;"  id="project_edit">
+			
+			<header>
+				
+				<nav>
+					<a id="close_project_edit" href="#projects"><i class="i-left"></i></a>
+				</nav> 
+				
+				<h1>Edit Project Information</h1>
+				
+				<nav class="right">
+				</nav>
+				
+			</header>
+
+			<article class="scroll">
+
+				<form>
+				
+					asdf
+				
+				</form>
+
+			</article>
+
+		</section>
+		
+		
+		
+		
+		<section class="sub_panel" id="project_new" style="display:none;">
+			
+			<header>
+				
+				<nav>
+					<a id="close_project_new" href="#projects"><i class="i-left"></i></a>
+				</nav> 
+				
+				<h1>Add A New Project</h1>
+				
+				<nav class="right">
+				</nav>
+				
+			</header>
+
+			<article class="scroll">
+
+				<form id="new_project_form">
+	
+					<ul>
+						
+						<li>
+							
+							<figure>
+								<i class="i-drawer"></i>
+							</figure>
+							
+							<fieldset>
+							
+								<input type="text" placeholder="project name" id="project_name" name="project_name">
+								
+							</fieldset>
+							
+						</li>
+						
+						<li>
+							
+							<figure>
+								<i class="i-language"></i>
+							</figure>
+							
+							<fieldset class="wrap_select">
+							
+								<select placeholder="source language">
+								
+									<option value="" disabled selected>select source language</option>
+									<option>English</option>
+									<option>English</option>
+									<option>English</option>
+								
+								</select>
+								
+							</fieldset>
+							
+						</li>
+						
+						<li>
+							
+							<figure>
+								<i class="i-language"></i>
+							</figure>
+							
+							<fieldset class="wrap_select">
+							
+								<select placeholder="target language">
+								
+									<option value="" disabled selected>select target language</option>
+									<option>English</option>
+									<option>English</option>
+									<option>Other</option>
+								
+								</select>
+								
+							</fieldset>
+							
+						</li>
+						
+						<li>
+							<a href="#" id="use_rtl" class="_checked" >
+								<figure><i class="i-align-right-text"></i></figure>
+								<em><i class="i-check"></i><i class="i-uncheck"></i></em>
+								<hgroup>
+								
+									<h1>Use right-to-left text when translating.</h1>
+									<h2>Used for translation panel.</h2>
+								</hgroup>
+							</a>
+						</li>
+						
+						<li id="select_books">
+						
+							<a href="#projects/books/new/en">
+								<figure><i class="i-book"></i></figure>
+								<em><i class="i-right"></i></em>
+								<hgroup>
+								
+									<h1>Books</h1>
+									<h2>Select the books you want to translate.</h2>
+									
+								</hgroup>
+							</a>
+							
+						</li>
+						
+					</ul>
+				
+				</form>
+			</article>
+			
+			<a href="#projects" id="add_books"><i class="i-check"></i></a>
+			
+		</section>
+		
+		
+		<section class="sub_panel" id="projects_all">
+	
+			<header>
+				
+				<nav>
+					<a id="close_projects_all" href="#"><span>Edit</span></a>
+				</nav> 
+				
+				<h1>Projects</h1>
+				
+				<nav class="right">
+					<a id="close_projects_all" href="#"><i class="i-close"></i></a>
+				</nav>
+				
+			</header>
+			
+			
+			<article class="scroll">
+	
+				<ol class="folders">
+					<li>
+						<a href="#projects/edit">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name a ds d d d d d d d d d d d</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure><i class="i-drawer"></i></figure>
+							<figcaption>
+								<h1>Project Name</h1>
+								<h2>Source Language</h2>
+								<h2>Target Language</h2>
+							</figcaption>
+						</a>
+					</li>
+				</ol>		
+			
+			</article>
+			
+			<a href="#projects/new" id="add_project"><i class="i-plus"></i><i class="i-drawer"></i></a>
+	
+		</section>
+
+		<section class="sub_panel hide_right" id="project_books">
+	
+			<header>
+				
+				<nav>
+					<a id="close_project_books" href="#projects/new"><i class="i-left"></i></a>
+				</nav> 
+				
+				<h1>Select Books</h1>
+				
+				<nav class="right">
+				</nav>
+				
+			</header>
+			
+			
+			<article class="scroll">
+	
+				<ol class="books">
+					<li>
+						<a href="#projects/edit">
+							<figure style="background-image: url('assets/img/100/obs-01-01.jpg')"></figure>
+							<figcaption>
+								<h1>Open Bible Stories</h1>
+								<h2>Source Language</h2>
+							</figcaption>
+							<i class="i-3d-bookmark"></i>
+						</a>
+					</li>
+					<li>
+						<a class="active" href="#">
+							<figure style="background-image: url('assets/img/100/obs-02-01.jpg')"></figure>
+							<figcaption>
+								<h1>Genesis</h1>
+								<h2>Source Language</h2>
+							</figcaption>
+							<i class="i-3d-bookmark"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure style="background-image: url('assets/img/100/obs-22-01.jpg')"></figure>
+							<figcaption>
+								<h1>Matthew</h1>
+								<h2>Source Language</h2>
+							</figcaption>
+							<i class="i-3d-bookmark"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure style="background-image: url('assets/img/100/obs-23-01.jpg')"></figure>
+							<figcaption>
+								<h1>Mark</h1>
+								<h2>Source Language</h2>
+							</figcaption>
+							<i class="i-3d-bookmark"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<figure style="background-image: url('assets/img/100/obs-24-01.jpg')"></figure>
+							<figcaption>
+								<h1>Luke</h1>
+								<h2>Source Language</h2>
+							</figcaption>
+							<i class="i-3d-bookmark"></i>
+						</a>
+					</li>
+
+				</ol>		
+			
+			</article>
+			
+			<a href="#projects/new" id="add_books"><i class="i-check"></i></a>
+		
+		</section>
+
+	</div>
+
+
+	<div id="profile_panel" class="hide_left">
+	
+		<header>
+			
+			<nav>
+			</nav> 
+			
+			<h1>Profile</h1>
+			
+			<nav class="right">
+				<a id="close_profile" href="#"><i class="i-close"></i></a>
+			</nav>
+			
+		</header>
+		
+		<article class="scroll">
+		
+			<form id="profile_form">
+
+				<ul>
+					
+					<li>
+						
+						<figure>
+							<i class="i-user"></i>
+						</figure>
+						
+						<fieldset>
+						
+							<input type="text" placeholder="name" id="name" name="name" />
+							
+						</fieldset>
+						
+					</li>
+					
+					<li>
+						
+						<figure>
+							<i class="i-email"></i>
+						</figure>
+						
+						<fieldset>
+						
+							<input type="email" placeholder="email" id="email" name="email" />
+							
+						</fieldset>
+						
+					</li>
+					
+					<li>
+						
+						<figure>
+							<i class="i-id"></i>
+						</figure>
+						
+						<hgroup>
+						
+							<h2>UUID</h2>
+							<h1 id="uuid" >34523452345234523452345</h1>
+							
+						</hgroup>
+						
+					</li>
+					
+				</ul>
+			
+			</form>
+		
+		</article>
+		
+		<button id="save_profile" class="_active"><i class="i-disk-upload"></i></button>
+		
+	</div>
+
+
+	<div id="share_panel" style="display:none;" class="hide_right">
+	
+		<header>
+			
+			<nav>
+				<a id="close_share" href="#"><i class="i-close"></i></a>
+				<a id="back_to_share" href="#"><i class="i-left"></i></a>
+			</nav> 
+			
+			<h1>Share</h1>			
+			
+		</header>
+		
+		
+		<article class="scroll" id="share_list">
+		
+			
+			<nav id="share_tabs">
+				<a id="share_unshared" href="#share/recent">Recent</a>
+				<a id="share_all" href="#share/all">All</a>
+			</nav>
+
+		
+		
+			<article id="share_description">
+				
+				<p>Instructions</p>
+			
+			</article>
+		
+			
+			<form id="share">
+				
+				<ol class="wrap_languages">
+				
+				
+				</ol>
+				
+				<script id="share-list" type="text/html">
+
+					<li>					
+					
+						<input type="checkbox" checked="checked" data-language-id="{{language_id}}" /><a href="#"><i class="i-language"></i>{{language}}</a>
+						
+						<ol>
+							
+							{{#book_info}}
+							
+							<li>
+							
+							<input type="checkbox" checked="checked" data-book-id="obs" /><a href="#"><i class="i-book"></i>{{book}}</a>
+							
+							<ol class="wrap_stories">
+							
+							
+								{{#story_info}}
+							
+								<li style="_display:none">
+								
+									<input type="checkbox" checked="checked" data-story-id="{{story_id}}" /><a href="#"><i class="i-open-book"></i>{{story_title}}</a>
+								
+									<ol class="wrap_frames">
+	
+										{{#frame_info}}
+	
+										<li class="frame" style="_display:none">
+										
+											<input type="checkbox" checked="checked" data-frame-id="{{frame_id}}" /><a href="#"><i class="i-text-document"></i>[{{story}}-{{frame}}] <!-- <i class="i-share"></i> --></a>
+										
+										</li>																
+	
+										{{/frame_info}}
+	
+									</ol>
+								
+								</li>
+							
+								{{/story_info}}
+							
+													
+							</ol>
+							
+							</li>
+								
+							{{/book_info}}
+						
+						</ol>
+						
+					</li>
+					
+				</script>
+								
+			</form>	
+			
+		</article>
+		
+		
+		<article class="scroll" id="share_preview">
+		
+			<div>
+
+			<pre>
+
+
+			</pre>
+			
+			
+			<script id="share-preview" type="text/html">
+			
+			
+// {{language}} //
+
+{{#book_info}}
+
+// {{book}} //
+	
+{{#story_info}}
+	
+====== {{story_title}} ======
+
+{{#frame_info}}
+
+[{]https://api.unfoldingword.org/obs/jpg/1/en/360px/obs-en-{{story}}-{{frame}}.jpg[}]
+
+{{#frame_text}}			
+			
+{{frame_text}}
+
+{{/frame_text}}
+{{/frame_info}}
+
+// {{story_ref}} //
+		
+{{/story_info}}
+
+{{/book_info}}
+			
+			</script>
+			
+			
+			
+			
+			</div>
+
+		
+		</article>
+		
+		
+		<nav id="share_bottom" class="active">
+			<a href="#share/preview"><i class="i-glasses"></i></a>
+		</nav>
+			
+		<nav id="share_bottom_send" class="active">
+			<a href="#share/preview"><i class="i-plane"></i></a>
+			<a href="#share/preview"><i class="i-sd"></i></a>
+		</nav>
+			
+	</div>
+
+
+
+
+
+
+
+
+	
+	<div id="settings_panel" style="display:none;" class="hide_right">
+	
+		<header>
+			
+			<nav>
+				<a id="close_settings" href="#"><i class="i-close"></i></a>
+			</nav> 
+			
+			<h1>Settings</h1>
+			
+<!-- 			<div id="loader"><dt></dt></div> -->
+			
+			
+		</header>
+		
+		
+		
+		<div id="settings_target_language" class="">
+		
+			<form id="search_for_target_language_form">
+								
+				<ul>
+					
+					<li>
+						
+						<figure>
+							<i class="i-search"></i>
+						</figure>
+						
+						<fieldset>
+						
+							<input type="text" placeholder="Search languages." id="search_for_target_language" name="search_for_target_language">
+							
+						</fieldset>
+						
+					</li>
+										
+				</ul>
+			</form>
+
+			<article class="scroll">	
+			
+				<legend class="list_title"><span>66</span></legend>		
+			
+				<ul id="search_for_target_language_results">
+				</ul>
+	
+				<script id="search-for-target-language-results" type="text/html">
+					<li>
+						<a href="#">
+							<figure>{{lc}}</figure>
+							<hgroup>
+								<h1>{{ln}}</h1>
+							</hgroup>
+						</a>
+					</li>
+				</script>
+			
+			</article>
+		
+		</div>
+		
+		
+		<article id="settings_index" class="scroll ">
+		
+			<ul>
+			
+				<li>
+					<a href="#" id="use_rtl" class="_checked" >
+						<figure><i class="i-align-right-text"></i></figure>
+						<em><i class="i-check"></i><i class="i-uncheck"></i></em>
+						<hgroup>
+						
+							<h1>Use right-to-left text when translating.</h1>
+							<h2>Used for translation panel.</h2>
+						</hgroup>
+					</a>
+				</li>
+			
+				<li id="go_to_language_autocomplete">
+					<a href="#settings/target_language" >
+						<figure>
+							<i class="i-language"></i>
+						</figure>
+						
+						<em><i class="i-right"></i></em>
+
+						<hgroup>
+							<h1>Add a new target language.</h1>
+						</hgroup>
+					</a>
+				</li>
+			
+<!--
+				<li id="wrap_new_target_language">
+					<form id="new_target_language_form">
+					
+						<figure>
+							<i class="i-language"></i>
+						</figure>
+						
+						<em><a style="display: none;" href="#"><i class="i-plus"></i></a></em>
+						
+						<fieldset>
+						
+							<input type="text" placeholder="New target language." id="new_target_language" name="new_target_language">
+							
+						</fieldset>
+						
+					</form>
+						
+				</li>
+-->
+				
+<!--
+				<li id="wrap_new_target_language_select">
+					
+					<figure>
+						<i class="i-language"></i>
+					</figure>
+					
+					<fieldset class="wrap_select">
+					
+						<select placeholder="source language">
+						
+							<option value="" disabled="" selected="">Select source language.</option>
+							<option>English</option>
+							<option>English</option>
+							<option>English</option>
+						
+						</select>
+						
+					</fieldset>
+					
+				</li>	
+-->
+									
+<!--
+				<li id="wrap_new_target_language">
+				
+					<form id="new_target_language_select_form">
+					
+						<figure>
+							<i class="i-language"></i>
+						</figure>
+												
+						<fieldset class="wrap_select">
+						
+							<select id="language_input_select_list" name="language_input_select_list">								
+
+							</select>
+
+								<script id="target-languages-select-list" type="text/html">
+									<optgroup label="{{lc}}">
+										<option value="{{lc}}">{{ln}}</option>
+									</optgroup>
+								</script>
+
+							
+						</fieldset>
+						
+					</form>
+						
+				</li>
+-->
+				
+				<li id="users_target_languages">
+				
+					<ol>							
+					</ol>
+					
+					<script id="target-languages-list" type="text/html">
+					
+						<li>
+							<a href="#" id="" class="_checked" data-language-id="{{language_id}}" data-language-code="{{language_code}}">
+
+								<em><i class="i-check"></i><i class="i-uncheck"></i></em>
+								<hgroup>
+								
+									<form class="language_edit_form"><input type="text" class="language_edit" value="{{language}}" disabled></form>
+
+								</hgroup>
+							</a>
+						</li>
+						
+					</script>
+				
+				</li>
+			
+			
+			</ul>
+
+			<a href="" id="resetDB">Reset Database</a>
+		
+		</article>
+			
+	</div>
+
+	
+</main>
+
+<article id="dialog">
+	
+	<div>
+		
+		<section>
+		
+			<header>
+				<a href="#" class="close"><i class="i-close"></i></a>
+				<h1>Alert</h1>
+			</header>
+		
+			<p>Are you with the June Combs party?</p>
+		
+			<hgroup class="ff">
+			
+				<a href="#" class="no">NO</a>					
+
+				<a href="#" class="yes">YES</a>
+			
+			</hgroup>
+		
+		</section>
+		
+	</div>
+
+</article>
+
+
+</body>
+</html>

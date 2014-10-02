@@ -1,0 +1,164 @@
+div#translation_resources_panel,
+div#profile_panel,
+div#projects_panel,
+div#settings_panel,
+div#share_panel,
+div#selection_panel {
+
+	width: auto;
+	min-width:inherit;
+}
+
+div#translation_resources_panel,
+div#share_panel,
+div#settings_panel {
+	left: 44px;
+	
+}
+
+div#profile_panel,
+div#selection_panel {
+	right: 44px;
+	
+}
+
+#translation_resources_panel .scroll p, #translation_resources_panel .scroll li {
+	font-size: .8em;
+}
+
+
+
+
+form#translation textarea,
+#wrap_source_text div#source_text p {
+	font-size: .8em;
+	line-height: 24px;
+}
+
+#wrap_source_text div#source_text p {
+	margin-top: 30px;
+}
+
+form#translation textarea {
+	padding-top: 50px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+#wrap_source_text div#source_text {
+	padding: 20px 10px;
+}
+
+
+
+#wrap_translation_form .scroll,
+#wrap_translation_form .scroll form {
+	-webkit-background-size: 100% 24px;
+	-moz-background-size: 100% 24px;
+	background-size: 100% 24px;
+/* 	bottom: 44px; */
+}
+
+#wrap_translation_form:after {
+	display: none;
+}
+
+
+form#translation+cite, #wrap_source_text div#source_text cite {
+	top: 6px;
+	font-size: .6em;
+}
+
+form#translation+cite {
+	left: 10px;
+}
+
+.column {
+	top: 44px;
+}
+
+a#add_books,
+a#add_project,
+button#save_profile,
+button#submit_form_translation,
+#wrap_source_text nav,
+#wrap_source_text nav a,
+nav#share_bottom_send,
+nav#share_bottom,
+span.tabs,
+span.tabs a,
+main header {
+	height: 44px;
+}
+
+a#add_project i{
+	top: 10px;
+}
+
+a#add_project i:first-child {
+	top: 7px;
+}
+
+a#close_selections,
+nav.history a,
+main header nav a{
+	width: 44px;
+	height: 44px;
+}
+
+#wrap_source_text nav a i,
+nav#share_bottom_send a i,
+nav#share_bottom a,
+nav#share_bottom_send a,
+a#close_selections i,
+span.tabs a i,
+nav.history a i,
+main header nav a i{
+	top: 8px;
+}
+
+
+main header nav a span{
+	margin-top: 12px;
+}
+
+a#close_selections i {
+	left: 9px;
+}
+
+
+main header h1{
+	margin: 0px 140px;
+	padding-top: 6px;
+}
+
+main header h1 big {
+/* 	margin-top: -3px; */
+}
+
+#translation_resources_panel header h1 {
+margin-left: 94px;
+margin-right: 94px;
+}
+.scroll {
+	top: 44px;
+}
+
+#share_panel .scroll{
+	top: 44px;
+	bottom: 44px;
+}
+
+#projects_panel article.scroll,
+#profile_panel article.scroll,
+#wrap_translation_form .scroll,
+#wrap_source_text .scroll {
+	bottom: 44px;
+}
+
+
+
+#settings_panel #settings_target_language .scroll {
+	top: 118px;
+}
