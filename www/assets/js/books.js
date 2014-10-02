@@ -9,10 +9,13 @@ BOOKS.title = '';
 
 BOOKS.index = function(){
 
+	$('main header nav a#open_selections').addClass('swell');
+	
+	$('textarea, input').trigger('blur');
 
 	$('main').removeClass('focus_translation_form').removeClass('focus_resources').addClass('focus_tabs');
 
-	$('#dialog header .close').trigger('click');
+	// $('#dialog header .close').trigger('click');
 	
 	// show the books
 	$('.tabs a:first-child').trigger('click');
@@ -27,6 +30,8 @@ BOOKS.index = function(){
 		
 	}
 */
+
+		//$('article.scroll').on('touchstart', function(event){});
 
 		
 };

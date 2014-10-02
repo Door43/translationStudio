@@ -20,3 +20,8 @@ body.translation_rtl #wrap_translation_form form+cite {
 	width: 50px;
 	overflow: visible;	
 }
+
+body.translation_rtl #wrap_translation_form:after {
+	left: 100%;
+	margin-left: -17px;
+}

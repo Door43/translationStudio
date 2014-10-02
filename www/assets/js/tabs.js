@@ -25,9 +25,9 @@ $(document).on('click','.tabs a', function(e){
 	var selection = tis.attr('data-tab');
 	
 	
-	$('[data-tabs-controls-content="'+ scope +'"]').fadeOut();
+	$('[data-tabs-controls-content="'+ scope +'"]').hide();
 	
-	$('[data-tab-content="'+ selection +'"]').stop().fadeIn();
+	$('[data-tab-content="'+ selection +'"]').stop().show();
 	
 	$('#selection_panel').removeClass('hide_left');
 	
@@ -57,7 +57,35 @@ $(document).on('click', '[data-tab-content="story"] ul li a', function(e){
 
 
 
+// must select a story and frame before opening resources panel
+$(document).on('click', 'a#resource_notes', function(e){
+	
 
+	if( $('form#translation input#story_hash').val() == '' || $('form#translation input#frame_hash').val() == ''  ){
+
+		
+		DIALOG.show(
+			'No Selection',
+			'Make a selection.',
+			'OK',
+			function(){
+			
+				//alert('yes');
+			
+			}, 
+			false,
+			function(){
+			
+				//alert('no');
+			
+			}
+		);
+				
+		e.preventDefault();
+
+	}
+	
+});
 
 
 
@@ -91,16 +119,6 @@ $(document).on('click', 'a#close_selections', function(e){
 	
 });
 
-
-
-
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", TABS.onDeviceReady, false);
-    } else {
-        TABS.onDeviceReady();
-    }	
-});
 
 
 TABS.onDeviceReady = function(){

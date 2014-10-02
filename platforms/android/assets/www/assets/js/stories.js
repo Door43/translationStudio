@@ -4,12 +4,20 @@ var STORIES = [];
 
 
 STORIES.in = function(book){
-	
+
+
+	$('main header nav a#open_selections').addClass('swell');
+
+	$('textarea, input').trigger('blur');
+
+	// disable translation textarea
+	$('#center_panel form#translation textarea#frame_text').attr('disabled', 'true');
+
 	$('main').removeClass('focus_translation_form').removeClass('focus_resources').addClass('focus_tabs');
 	// show the stories in this book
 	//e.preventDefault();
 	
-	$('#dialog header .close').trigger('click');
+	// $('#dialog header .close').trigger('click');
 	
 	localStorage.book = book;
 	
@@ -24,10 +32,21 @@ STORIES.in = function(book){
 			
 		dataType: "json",
 		url: 'assets/json/obs-txt-1-en-obs-en.json',
+		error: function(xhr,status,error) {
+			//alert('Error reading file: obs-txt-1-en-obs-en.json\n\rxhr: '+xhr+'\n\rstatus: '+status+'\n\rerror: '+error);
+			DIALOG.show(
+				'Error',
+				'Error reading file: obs-txt-1-en-obs-en.json\n\rxhr: '+xhr+'\n\rstatus: '+status+'\n\rerror: '+error,
+				'OK',
+				function(){}, 
+				false,
+				function(){}
+			);	    	
+		},
 		success: function(msg){
 			
 			//console.log(msg.chapters);
-			
+			// alert('ajax chapters');
 			if(book == 'obs'){
 				BOOKS.title = 'Open Bible Stories';
 			}
@@ -47,6 +66,10 @@ STORIES.in = function(book){
 			$('#put-story-list').mustache('story-list', msg.chapters, { method: 'append' }); 
 			
 			setTimeout(function(){
+			
+				//$('article.scroll').on('touchstart', function(event){});
+
+			
 				$('#put-story-list #loader').remove();
 				
 				$('[data-story="'+localStorage.story+'"]').addClass('active');

@@ -9,6 +9,23 @@ SHARE.directory = "";
 SHARE.fullPath = "";
 
 
+// close share panel
+$(document).on('click', 'a#close_share', function(e){
+	
+	$('#share_panel').addClass('hide_right');
+
+	setTimeout(function(){
+		$('#share_panel').hide();
+	}, 600);
+
+	
+	// remove icon swell (needed when the left panel is still open)
+	setTimeout(function(){
+		$('main header nav a#share').removeClass('swell');
+	}, 1000);
+	
+});
+
 
 // check boxes // handles the nested checkbox behavior
 
@@ -170,6 +187,10 @@ SHARE.all = function(){
 
 SHARE.recent = function(){
 
+	$('main header nav a#share').addClass('swell');
+
+	$('#center_panel form#translation textarea#frame_text').attr('disabled', 'true');
+	
 	SHARE.all_loaded = false;
 	localStorage.share_tab = 'recent';
 	

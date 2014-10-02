@@ -12,8 +12,11 @@ console.log('DIALOG');
 
 // show the dialog and defines it't text and behaivior
 
-DIALOG.show = function(heading,text,yes_ui, yes, no_ui, no){
+DIALOG.show = function(heading,text,yes_ui, yes, no_ui, no, show_close){
+	console.log('dialog.show');
 	
+	
+	show_close = typeof show_close !== 'undefined' ? show_close : true;
 /*
 	setTimeout(function(){
 		
@@ -23,6 +26,10 @@ DIALOG.show = function(heading,text,yes_ui, yes, no_ui, no){
 */
 	
 	DIALOG.ui = $('#dialog');
+
+	if(!show_close){
+		DIALOG.ui.find('header .close').hide();
+	}
 	
 	DIALOG.ui.find('header h1').html(heading);
 	//show the dialog ui
@@ -74,7 +81,7 @@ DIALOG.hide = function(){
 		
 		$('body').removeClass('show_dialog');
 		
-		
+		console.log('dialog.hide');
 		if(DIALOG.ui){
 		
 			setTimeout(function(){
@@ -100,33 +107,4 @@ $(document).on('click', '#dialog a.close', function(e){
 	DIALOG.hide();
 	
 });
-
-
-
-$(document).ready(function(){
-		
-	// for testing purposes
-
-/*
-	DIALOG.show(
-		'Alert',
-		'Are you with this party?',
-		'YES',
-		function(){
-		
-			//alert('yes');
-		
-		}, 
-		'NO',
-		function(){
-		
-		//alert('no');
-		
-		}
-	);
-*/
-
-
-});
-
 

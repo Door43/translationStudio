@@ -19,17 +19,6 @@ db.transaction(function (tx) {
 */
 
 
-
-
-/**
- * Determine whether the file loaded from a mobile device or not
- */
-function isMobileDevice() {
-	//return (document.location.protocol == "file:");
-	return (window.cordova);
-	// return (document.URL.indexOf("http://") === -1 && document.URL.indexOf("https://") === -1);
-}
-
 function errorHandler(err) {
     alert("Error processing SQL: "+err.code);
 }
@@ -37,7 +26,8 @@ function errorHandler(err) {
 function successCB() {
     // alert("SQL success!");
 
-	UPDATE.init();
+	// this function call moved to INIT.js
+	//UPDATE.init();
 
     return true;
 }
@@ -47,18 +37,68 @@ DB.currentTime = function(){
 	return d.getTime();
 };
 
-DB.readLanguages = function(callback){
+DB.insertProject = function(project_name, source_language_id, target_language_id, rtl, callback){
+	
+	db.transaction(function (tx) {
+		// insert record
+		tx.executeSql(
+			'INSERT INTO projects (project_name, source_language_id, target_language_id, rtl, created, modified) VALUES (?,?,?,?,?,?)', 
+			[project_name, source_language_id, target_language_id, rtl, DB.currentTime(), DB.currentTime()],
+			function(tx, results){
+				// console.log(results);
+				if(results.rowsAffected != 1){
+					// something went wrong
+				}
+				else {
+					var project_id = results.insertId;
+					callback(project_name, project_id);
+					
+				}
+			}
+		);
+
+	});
+
+};
+
+DB.readProjects = function(callback){
 
 	db.transaction(function (tx) {
 		
-		tx.executeSql('SELECT * FROM languages WHERE source = "0"',
+		tx.executeSql('SELECT projects.id, projects.project_name, sl.language AS source_language, tl.language AS target_language FROM projects', +
+			'JOIN languages sl ON projects.source_language_id = sl.id ', +
+			'JOIN languages tl ON projects.target_language_id = tl.id ' +
 			[], 
 			function (tx, results) {
 				var len = results.rows.length, i;
 				data = [];
 				for (i = 0; i < len; i++){
 					var row = results.rows.item(i);
-					data[i] = {language_id: row.id, language: row.language}; //add to json object
+					data[i] = {project_id: row.id, project_name: row.project_name, source_language: row.source_language, target_language: row.target_language}; //add to json object
+				}
+				//console.log(json);
+				
+				callback(data);
+				
+			}
+		);
+
+	});
+
+};
+
+DB.readLanguages = function(callback){
+
+	db.transaction(function (tx) {
+		
+		tx.executeSql('SELECT * FROM languages WHERE source = "0" ORDER BY language_code',
+			[], 
+			function (tx, results) {
+				var len = results.rows.length, i;
+				data = [];
+				for (i = 0; i < len; i++){
+					var row = results.rows.item(i);
+					data[i] = {language_id: row.id, language: row.language, language_code: row.language_code}; //add to json object
 				}
 				//console.log(json);
 				
@@ -75,7 +115,7 @@ DB.selectLanguageFromString = function(string,callback){
 
 	db.transaction(function (tx) {
 		
-		tx.executeSql('SELECT * FROM languages WHERE language = ?',
+		tx.executeSql('SELECT * FROM languages WHERE language_code = ?',
 			[string], 
 			function (tx, results) {
 				var len = results.rows.length, i;
@@ -95,13 +135,48 @@ DB.selectLanguageFromString = function(string,callback){
 
 };
 
-DB.insertLanguage = function(language, source, callback){
+DB.selectSourceLanguage = function(callback){
+
+	db.transaction(function (tx) {
+		
+		tx.executeSql('SELECT * FROM languages WHERE source = 1 LIMIT 1',
+			[], 
+			function (tx, results) {
+				var len = results.rows.length, i;
+				data = {};
+				if(results.rows.length != 1){
+					// PROBLEM: no matching data or multiple source languages
+				}
+				else{
+					var row = results.rows.item(0);
+					data = {language_id: row.id, language: row.language, language_code: row.language_code}; //add to json object
+				}
+				callback(data);
+			},
+		    function(){
+				DIALOG.show(
+					'Error',
+					'DB.selectSourceLanguage failed.',
+					'OK',
+					function(){}, 
+					false,
+					function(){}
+				);	    	
+		    }
+			
+		);
+
+	});
+
+};
+
+DB.insertLanguage = function(language, language_code, source, callback){
 	
 	db.transaction(function (tx) {
 		// insert record
 		tx.executeSql(
-			'INSERT INTO languages (language, source, created, modified) VALUES (?,?,?,?)', 
-			[language, source, DB.currentTime(), DB.currentTime()],
+			'INSERT INTO languages (language, language_code, source, created, modified) VALUES (?,?,?,?,?)', 
+			[language, language_code, source, DB.currentTime(), DB.currentTime()],
 			function(tx, results){
 				// console.log(results);
 				if(results.rowsAffected != 1){
@@ -112,29 +187,41 @@ DB.insertLanguage = function(language, source, callback){
 					callback(language, language_id);
 					
 				}
-			}
+			},
+		    function(){
+				DIALOG.show(
+					'Error',
+					'DB.insertLanguage failed.\n\rlanguage: '+language,
+					'OK',
+					function(){}, 
+					false,
+					function(){}
+				);	    	
+		    }
+			
 		);
 
 	});
 
 };
 
-DB.updateLanguage = function(language_id, language, callback){
+DB.updateLanguage = function(language_id, language, language_code, callback){
 
 	db.transaction(function (tx) {
 		// update record
 		tx.executeSql(
-			'UPDATE languages SET language = ?, modified = ? ' +
+			'UPDATE languages SET language = ?, language_code = ?, modified = ? ' +
 			'WHERE id = ?' , 
-			[language, DB.currentTime(), language_id],
+			[language, language_code, DB.currentTime(), language_id],
 			function(tx, results){
 				// console.log(results);
 				if(results.rowsAffected != 1){
 					// something went wrong
 				}
 				else {
-					callback();
+					// it worked
 				}
+				callback();
 			}
 		);
 
@@ -177,7 +264,19 @@ DB.removeSourceForLanguage = function(language_id, callback){
 			
 				});
 
-			}
+			},
+		    function(){
+				DIALOG.show(
+					'Error',
+					'DB.removeSourceForLanguage failed.',
+					'OK',
+					function(){}, 
+					false,
+					function(){}
+				);	    	
+		    }
+			
+			
 		);
 
 	});
@@ -298,6 +397,33 @@ DB.readStory = function(language_id, story, callback){
 			'AND story = ? ' +
 			'LIMIT 1',
 			[language_id, story], 
+			function (tx, results) {
+				var data = {};
+				if(results.rows.length != 1){
+					// no matching data
+				}
+				else{
+					var row = results.rows.item(0);
+					data = {story_id: row.story_id, story_title: row.story_title, story_ref: row.story_ref}; //add to json object
+				}
+				callback(data);
+			}
+		);
+
+	});
+
+};
+
+DB.selectSourceStory = function(story, callback){
+
+	db.transaction(function (tx) {
+		
+		tx.executeSql('SELECT stories.id AS story_id, story_title, story_ref FROM stories ' +
+			'JOIN languages ON stories.language_id = languages.id ' +
+			'WHERE languages.source = 1 ' +
+			'AND story = ? ' +
+			'LIMIT 1',
+			[story], 
 			function (tx, results) {
 				var data = {};
 				if(results.rows.length != 1){
@@ -556,7 +682,7 @@ DB.selectedFramesToShare = function(frame_ids_array, callback){
 
 	db.transaction(function (tx) {
 		
-		tx.executeSql('SELECT languages.id AS language_id, language, story, stories.id AS story_id, story_title, story_ref, frames.id AS frame_id, frame, frame_text FROM frames ' +
+		tx.executeSql('SELECT languages.id AS language_id, language, language_code, story, stories.id AS story_id, story_title, story_ref, frames.id AS frame_id, frame, frame_text FROM frames ' +
 			'JOIN stories ON frames.story_id = stories.id ' +
 			'JOIN languages ON stories.language_id = languages.id ' +
 			'WHERE frames.id IN(' + frame_ids_str + ') ' +
@@ -564,7 +690,7 @@ DB.selectedFramesToShare = function(frame_ids_array, callback){
 			'ORDER BY languages.id, story, frame ASC ',
 			[], 
 			function (tx, results) {
-
+				
 				var len = results.rows.length, i, j=-1, k=-1, l=-1;
 				var data = [];
 				var prev_language_id = '';
@@ -585,6 +711,7 @@ DB.selectedFramesToShare = function(frame_ids_array, callback){
 						data[j] = {
 							language_id: row.language_id, 
 							language: row.language, 
+							language_code: row.language_code, 
 							book_info : [ 
 								{
 									book : 'obs',
@@ -639,7 +766,7 @@ DB.sourceFramesData = function(shareData, callback){
 		tx.executeSql('SELECT story, COUNT(frames.id) AS total_frames FROM frames ' +
 			'JOIN stories ON frames.story_id = stories.id ' +
 			'JOIN languages ON stories.language_id = languages.id ' +
-			'WHERE language = "en" ' +
+			'WHERE language_code = "en" ' +
 			//'AND languages.source = "0" ' +
 			'GROUP BY story ' +
 			'ORDER BY story, frame ASC ',
@@ -667,7 +794,8 @@ DB.sourceFramesData = function(shareData, callback){
 							// arrayLength4 = shareData[i].book_info[j].story_info[k].frame_info.length;
 							shareFrameTotal = shareData[i].book_info[j].story_info[k].frame_info.length;
 							sourceFrameTotal = sourceData[shareData[i].book_info[j].story_info[k].story];
-							// console.log('number of frames: '+arrayLength4);
+							// console.log('number of translated frames: '+shareFrameTotal);
+							// console.log('number of frames in story: '+shareData[i].book_info[j].story_info[k].story);
 							for (var l = 0; l < sourceFrameTotal; l++) { // frame loop
 								// console.log("      "+shareData[i].book_info[j].story_info[k].frame_info[l].frame);
 								if(sourceData[shareData[i].book_info[j].story_info[k].story] > shareFrameTotal){ // need to add missing frame info to shareData
@@ -753,7 +881,8 @@ function setupDB(tx) {
     //tx.executeSql('DROP TABLE IF EXISTS stories');
     //tx.executeSql('DROP TABLE IF EXISTS frames');
     
-    // create languages table
+/*
+    // old code to create languages table
     tx.executeSql(
     	'CREATE TABLE IF NOT EXISTS languages ( ' +
 	    	'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
@@ -763,19 +892,30 @@ function setupDB(tx) {
 	    	'modified DATETIME ' +
 	    ')'
     );
-/*
+*/
+    
+    // create languages table
     tx.executeSql(
-    	'CREATE TABLE IF NOT EXISTS books ( ' +
+    	'CREATE TABLE IF NOT EXISTS languages ( ' +
 	    	'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-	    	'language_id INTEGER, ' +
-	    	'book VARCHAR(10), ' +
-	    	'book_title VARCHAR(100), ' +
+	    	'language_code VARCHAR(20), ' +
+	    	'language VARCHAR(200) UNIQUE, ' +
+	    	'source BOOLEAN DEFAULT 0, ' +
 	    	'created DATETIME, ' +
 	    	'modified DATETIME ' +
-	    ')'
+	    ')',[],null,
+	    function(){
+			DIALOG.show(
+				'Error',
+				'Failed to create languages table.',
+				'OK',
+				function(){}, 
+				false,
+				function(){}
+			);	    	
+	    }
     );
-*/
-
+    
     // create stories table
     tx.executeSql(
     	'CREATE TABLE IF NOT EXISTS stories ( ' +
@@ -787,7 +927,18 @@ function setupDB(tx) {
 	    	'story_ref TEXT, ' +
 	    	'created DATETIME, ' +
 	    	'modified DATETIME ' +
-	    ')'
+	    ')',[],null,
+	    function(){
+			DIALOG.show(
+				'Error',
+				'Failed to create stories table.',
+				'OK',
+				function(){}, 
+				false,
+				function(){}
+			);	    	
+	    }
+	    
     );
     
     // create frames table
@@ -801,16 +952,111 @@ function setupDB(tx) {
 	    	'shared BOOLEAN DEFAULT 0, ' +
 	    	'created DATETIME, ' +
 	    	'modified DATETIME ' +
+	    ')',[],null,
+	    function(){
+			DIALOG.show(
+				'Error',
+				'Failed to create frames table.',
+				'OK',
+				function(){}, 
+				false,
+				function(){}
+			);	    	
+	    }
+	    
+    );    
+
+	// alert('in setupDB.\n\rlocalStorage.version = '+localStorage.version+'\n\rCONFIG.version = '+CONFIG.version);
+
+
+	// version 1.2 added a new column 'language_code' to the 'languages' table
+	
+	
+    // modify languages table if updating app from previous versions (1.1 or below)
+    if(localStorage.version && ( parseFloat(localStorage.version) < parseFloat(CONFIG.version) )){
+    	// alert('updating language table');
+	    tx.executeSql(
+	    	"ALTER TABLE languages ADD COLUMN language_code VARCHAR(20) DEFAULT '' ",[],null,
+	   		function(){
+				DIALOG.show(
+					'Error',
+					'Failed to alter languages table.',
+					'OK',
+					function(){}, 
+					false,
+					function(){}
+				);	    	
+		    }
+	    );
+	    
+	    
+	// update the source language record
+	// version 1.1 has 'en' stored in language field, should now be:
+	//    language: 'English'
+	//    language_code: 'en'
+	DB.selectSourceLanguage(function(data){
+		DB.updateLanguage(data.language_id, 'English', 'en', function(){});
+	}); 
+	    // BELOW SQL NOT SUPPORTED BY SQLITE
+	    // tx.executeSql(
+	    	// 'ALTER TABLE languages ' +
+			// 'RENAME COLUMN language to language_name '
+	    // );
+	    // tx.executeSql(
+	    	// 'ALTER TABLE languages ' +
+			// 'MODIFY language_name VARCHAR(200) '
+	    // );
+	    
+	    
+    }
+
+
+/*
+ *	code for version 2 (project functionality) 
+ *
+    // create projects table
+    tx.executeSql(
+    	'CREATE TABLE IF NOT EXISTS projects ( ' +
+	    	'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+	    	'project_name INTEGER, ' +
+	    	'source_language_id INTEGER, ' +
+	    	'target_language_id INTEGER, ' +
+	    	'rtl BOOLEAN DEFAULT 0, ' +
+	    	'created DATETIME, ' +
+	    	'modified DATETIME ' +
 	    ')'
     );    
 
+    // create books table
+    tx.executeSql(
+    	'CREATE TABLE IF NOT EXISTS books ( ' +
+	    	'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+	    	'language_id INTEGER, ' +
+	    	'book VARCHAR(10), ' +
+	    	'book_title VARCHAR(100), ' +
+	    	'created DATETIME, ' +
+	    	'modified DATETIME ' +
+	    ')'
+    );
+
+    // create projects_books_link table
+    tx.executeSql(
+    	'CREATE TABLE IF NOT EXISTS projects_books_link ( ' +
+	    	'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+	    	'project_id INTEGER, ' +
+	    	'book_id INTEGER ' +
+	    ')'
+    );    
+*/
+
 /*
 	db.transaction(function (tx) {
+
 		var d = new Date();
 
 		tx.executeSql(
-			'INSERT INTO stories (story, book_id, language_id, story_title, story_subtitle, created, modified) VALUES (?,?,?,?,?,?,?)', 
-			['01', '1', '1', 'title of story', 'i am story one subtitle', d.getTime(), d.getTime()]
+			'INSERT INTO books (book, book_title, language_id, created, modified) VALUES (?,?,?,?,?)', 
+			['obs', 'Open Bible Stories', '1', d.getTime(), d.getTime()]
 		);
 		tx.executeSql(
 			'INSERT INTO stories (story, book_id, language_id, story_title, story_subtitle, created, modified) VALUES (?,?,?,?,?,?,?)', 
@@ -820,36 +1066,15 @@ function setupDB(tx) {
 			'INSERT INTO stories (story, book_id, language_id, story_title, story_subtitle, created, modified) VALUES (?,?,?,?,?,?,?)', 
 			['01', '1', '1', 'title of story', 'i am a subtitle', d.getTime(), d.getTime()]
 		);
+
 	});
 */
 
 }
 
+DB.onDeviceReady = function(callback){
 
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", DB.onDeviceReady, false);
-    } else {
-        DB.onDeviceReady();
-    }	
-});
-
-
-DB.onDeviceReady = function(){
-
-/*
-	if(isMobileDevice()){
-		alert('I\'m a mobile device.');
-	}
-	else{
-		alert('I\'m not a mobile device.');
-	}
-*/
-	
 	if (!window.openDatabase) {
-		
-		//alert('Databases are not supported on this device. Sorry', 'error');
-		
 		
 		DIALOG.show(
 			'Error',
@@ -860,12 +1085,10 @@ DB.onDeviceReady = function(){
 			function(){}
 		);
 		
-		
-		
 	}
 	else {
 		db = window.openDatabase("Database", "1.0", "Translation Studio", 200000);
-		db.transaction(setupDB, errorHandler, successCB);
+		db.transaction(setupDB, errorHandler, callback);
 	}
 };
 
@@ -880,9 +1103,28 @@ DB.drop_tables = function(){
         tx.executeSql('DROP TABLE IF EXISTS frames');
     });
     
+    //clear all local storage
+    
+/*
     localStorage.removeItem("selected_target_language_id");
     localStorage.removeItem("selected_target_language");
     localStorage.removeItem("date_modified_en");
+    localStorage.removeItem("agree_to_terms");
+    localStorage.removeItem("book");
+    localStorage.removeItem("date_modified_en");
+    localStorage.removeItem("remember");
+    localStorage.removeItem("email");
+    localStorage.removeItem("frame");
+    localStorage.removeItem("share_tab");
+    localStorage.removeItem("story");
+    localStorage.removeItem("translation_rtl");
+    localStorage.removeItem("uuid");
+    localStorage.removeItem("version");
+*/
+    
+    localStorage.clear();
+    
+    window.localStorage.clear();
     
     location.reload();
 

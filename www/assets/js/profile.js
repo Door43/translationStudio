@@ -3,6 +3,7 @@ var PROFILE = [];
 
 PROFILE.index = function(){
 
+	$('main header nav a#open_profile').addClass('swell');
 	$('#profile_panel').removeClass('hide_left');
 	
 };
@@ -82,16 +83,6 @@ $(document).on('click', '#profile_panel button#save_profile', function(e){
 	
 	$('#profile_panel form').trigger('submit');
 	
-});
-
-
-
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", PROFILE.onDeviceReady, false);
-    } else {
-        PROFILE.onDeviceReady();
-    }	
 });
 
 

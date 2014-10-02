@@ -11,8 +11,8 @@ dateTimeString = function() {
 	var str = "";
 	var date = new Date();
 	var year    = date.getFullYear();
-	var month   = date.getMonth();
-	var day     = date.getDay();
+	var month   = date.getMonth()+1;
+	var day     = date.getDate();
 	var hour    = date.getHours();
 	var minute  = date.getMinutes();
 	var second = date.getSeconds();  
@@ -34,3 +34,5 @@ pad = function(input, length, padding)
   }
   return padding.substr(0, length - input.length) + input;
 };
+
+

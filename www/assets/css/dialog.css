@@ -99,6 +99,10 @@ body.show_dialog #dialog {
 #dialog > div > section p {
 	margin: 30px 13px; 
 }
+#dialog > div > section p a {
+	color: #1da9da;
+	border-bottom: 1px dotted #1da9da;
+}
 
 
 

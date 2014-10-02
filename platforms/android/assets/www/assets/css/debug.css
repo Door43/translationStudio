@@ -4,10 +4,10 @@ div#wrap_debug {
 	position: absolute;
 	top: 88px;
 	right: 33.3333%;
-	right: 44px;
+	right: 22px;
 	bottom: 88px;
 	left: 33.3333%;
-	left: 44px;
+	left: 22px;
 	color: green;
 	font-family: monospace;
 	-webkit-transition: .5s;
@@ -28,7 +28,7 @@ div#wrap_debug article {
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 	box-sizing: border-box;
-	padding: 0px 20px;
+	padding: 0px 10px;
 	font-size: 14px;
 	line-height: 1.4em;
 	color: #EF5D32;
@@ -40,7 +40,7 @@ div#wrap_debug article span{
 
 div#wrap_debug form {
 	position: absolute;
-	right: 88px;
+	right: 50px;
 	bottom: 0;
 	left: 0;
 	height: 44px;
@@ -51,7 +51,7 @@ div#wrap_debug form input {
 	position: absolute;
 	bottom: 0;
 	left: 0; 
-	right: 88px;
+	right: 50px;
 	top: 0;
 	height: 44px;
 	width: 100%;
@@ -76,7 +76,7 @@ div#wrap_debug form button {
 	border: none;
 	outline: none;
 	top: -2px;
-	width: 88px;
+	width: 50px;
 	font-size: 20px;
 	padding: 11px 0;
 	text-align: center;

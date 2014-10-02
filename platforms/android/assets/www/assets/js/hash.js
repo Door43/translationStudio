@@ -18,27 +18,19 @@ HASH.first_visit=true;
 
 
 
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", HASH.onDeviceReady, false);
-    } else {
-        HASH.onDeviceReady();
-    }	
-});
-
-
-
 HASH.onDeviceReady = function(){
 	
 
-	
+	// alert('hash.ondeviceReady');
     if(window.location.hash.length == false){
-    
-    	if(window.location.hash.length==false){
     	
-    		window.location.hash=HASH.myDefault;
+    	location.hash = CONFIG.myDefaultHash;
     	
-    	}
+    	// android does not display hash the first time the page is loaded, causing a browser history error
+    	// fix for android browser not displaying hash on first time loading this page
+    	// While this fixes an issue with the Android browser, it causes an ajax problem in the compiled app, perhaps a path issue?
+    	// window.history.pushState("object or string", "Title", "/"+CONFIG.myDefaultHash);
+    	
     	//$(window).trigger("hashchange");
 	}	
 	else {
@@ -49,7 +41,26 @@ HASH.onDeviceReady = function(){
 
 window.onhashchange = function(){
 
+	// hack to make the scroll work
+/*
+	$("article.scroll")
+		//.css("-webkit-overflow-scrolling", "auto")
+		.css('box-shadow','none')
+		.unbind('touchstart');
+	
+	window.setTimeout(function () { 
+	
+		$("article.scroll")
+			.on('touchstart', function(event){})
+			//.css("-webkit-overflow-scrolling", "touch")
+			.css('box-shadow','inset 0 0 0 5px pink'); 
+		
+	}, 1000);
+*/
+
 	//window.location.hash
+	
+	CUSTOM.show_terms();
 	
 	if( window.location.hash == '#' || window.location.hash == ''){
 		//alert('no hash');	
@@ -59,7 +70,8 @@ window.onhashchange = function(){
 		}
 		
 		else {
-			window.location.hash = HASH.myDefault;
+			// window.location.hash = HASH.myDefault;
+			window.location.hash = CONFIG.myDefaultHash;
 		}
 		
 		$(window).trigger("hashchange");
@@ -72,16 +84,16 @@ window.onhashchange = function(){
 	HASH.myClass=HASH.array[0].toUpperCase();
 
 	if(HASH.array.length>1){
-		HASH.method=HASH.array[1]
+		HASH.method=HASH.array[1];
 	}
 	else{
-		HASH.method="index"
+		HASH.method="index";
 	}
 	
 	HASH.params="";
 
 	for(i=3;i<=HASH.array.length;i++){
-		HASH.params = HASH.params+'"'+HASH.array[i-1]+'",'
+		HASH.params = HASH.params+'"'+HASH.array[i-1]+'",';
 	}
 	
 	HASH.params=HASH.params.replace(/,$/,"");

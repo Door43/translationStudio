@@ -128,7 +128,7 @@
 .i-light-table:before {
   content: "H";
 }
-.i-journal:before {
+.i-clipboard:before {
   content: "I";
 }
 .i-home:before {
@@ -220,4 +220,22 @@
 }
 .i-sd:before {
   content: "8";
+}
+.i-down-scale:before {
+  content: "9";
+}
+.i-move-down:before {
+  content: "!";
+}
+.i-info:before {
+  content: "\"";
+}
+.i-drawer:before {
+  content: "$";
+}
+.i-tree:before {
+  content: "#";
+}
+.i-light:before {
+  content: ")";
 }

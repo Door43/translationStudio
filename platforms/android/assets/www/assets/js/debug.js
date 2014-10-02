@@ -166,7 +166,7 @@ DEBUG.init_console_overwrite = function(){
 				var d = $('div#wrap_debug article');
 				//d.scrollTop(d.prop("scrollHeight"));
 				
-				d.animate({scrollTop: d.prop("scrollHeight")}, 1000)
+				d.animate({scrollTop: d.prop("scrollHeight")}, 1000);
 		
 		
 				
@@ -174,9 +174,9 @@ DEBUG.init_console_overwrite = function(){
 			
 			//old();        
 	        
-	    }
+	   };
 	    
 	})();
 
 
-}
+};

@@ -26,8 +26,8 @@ $(document).on('focus','input,textarea', function(){
 	
 	//$('h1').html('focus 2.1');
 	
-	//console.log('focus');
-	
+	$(window).trigger('resize');
+/*	
 	var input = $(this);
 
 	
@@ -35,7 +35,8 @@ $(document).on('focus','input,textarea', function(){
 	
 		window.scrollTo(0, 0);
 		document.body.scrollTop = 0;
-		$('body main').height(window.innerHeight).css('_border','2px solid red');
+		$('body main').height(window.innerHeight);
+		
 		
 		
 		// moves the curser to the end
@@ -45,8 +46,9 @@ $(document).on('focus','input,textarea', function(){
 
 	
 	}, 500);
-	
+*/
 });
+
 
 
 
@@ -59,13 +61,15 @@ $(document).on('blur','input,textarea', function(){
 	
 	//$('h1').html('focus 2.1');
 	
-	//console.log('focus');
+	$(window).trigger('resize');
 	
 	setTimeout(function(){
 	
 		window.scrollTo(0, 0);
 		document.body.scrollTop = 0;
 		$('body main').height('auto');
+		
+
 	
 	}, 5);
 	
@@ -74,7 +78,8 @@ $(document).on('blur','input,textarea', function(){
 
 
 
-
+// history button functions moved to resources.js (v1.2)
+/*
 $(document).on('click','a.true_back', function(e){
 
 	e.preventDefault();
@@ -93,16 +98,15 @@ $(document).on('click','a.true_forward', function(e){
 	window.history.forward();
 
 });
+*/
 
 
+document.addEventListener('touchmove', function (e) { 
 
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", CUSTOM.onDeviceReady, false);
-    } else {
-        CUSTOM.onDeviceReady();
-    }	
-});
+	//e.preventDefault(); 
+	e.stopPropagation();
+	
+}, false);
 
 
 
@@ -115,7 +119,8 @@ CUSTOM.onDeviceReady = function(){
 	});
 	
 	
-	
+
+
 	
 /*
 	$("main").swipe( {
@@ -335,6 +340,119 @@ var touchobj = 0;;
 
 
 
+
+
+
+
+
+CUSTOM.show_terms = function(){
+
+	
+	// see if the user has agreed to the terms in the past
+	
+	if(!localStorage.agree_to_terms){
+
+
+		DIALOG.show(
+	
+			'Terms of Use',
+			
+			'In order to use this app, you must agree to release your work under the terms of the <a id="creative_commons_link" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International License</a>.',
+			
+			'I Agree',
+			
+			function(){
+			
+			
+				//DB.drop_tables();
+				
+				localStorage.agree_to_terms = "YES";
+				
+			
+			}, 
+			
+			"No Thanks",
+			
+			function(){
+			
+				setTimeout(CUSTOM.show_terms, 1000);
+				
+			
+			},
+			
+			false
+		);		
+		
+	}				
+	
+};
+
+
+
+$(document).on('click','a#creative_commons_link', function(e){
+	
+	e.preventDefault();
+	
+	CUSTOM.creative_commons();
+	
+});
+
+
+CUSTOM.creative_commons = function(){
+
+	
+	// see if the user has agreed to the terms in the past
+	
+	if(!localStorage.agree_to_terms){
+
+
+		DIALOG.show(
+	
+			'Attribution-ShareAlike 4.0 International',
+			
+			'You are free to: Share, copy, and redistribute the material in any medium or format; Adapt, remix, transform, and build upon the material for any purpose, even commercially. The licensor cannot revoke these freedoms as long as you follow the license terms.</p> ' +
+			'<p>Under the following terms: Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use; ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original; No additional restrictions - You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits. </p> ' +
+			'<p>Notices: You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation; No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.',
+			
+			'OK',
+			
+			function(){
+			
+			
+				//DB.drop_tables();
+				setTimeout(CUSTOM.show_terms, 1000);
+				//localStorage.agree_to_terms = "YES";
+				
+			
+			}, 
+			
+			false,
+			
+			function(){
+			
+				//setTimeout(CUSTOM.show_terms, 1000);
+				
+			
+			},
+			
+			false
+		);		
+		
+	}				
+	
+};
+
+
+
+
+
+
+
+
+
+
+
+
 $('textarea').off('touchmove');
 //$('body').off('touchmove touchstart', '.scrollable');
 
@@ -367,8 +485,25 @@ $(document).on('focus','textarea', function(){
 });
 */
 
+//var r = 0;
 
 $(window).resize(function () {    
+
+	//var h = $('main').height();
+
+	//$('h1').html('resize '+ r + ':' + h);
+	
+	//r++;
+	
+	//$('h1').html(window.innerHeight);
+	
+	if( window.innerHeight < 355 && window.innerWidth > 450 ){
+		$('body').addClass('hide_translation_nav');
+	}
+	
+	else {
+		$('body').removeClass('hide_translation_nav');
+	}
 
 
 	//$('input').trigger('blur');

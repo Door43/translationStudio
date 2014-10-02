@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
 import android.util.Base64;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -124,7 +125,7 @@ public class SocialSharing extends CordovaPlugin {
             ArrayList<Uri> fileUris = new ArrayList<Uri>();
             final String dir = getDownloadDir();
             for (int i = 0; i < files.length(); i++) {
-              final Uri fileUri = getFileUriAndSetType(draft, dir, files.getString(i), subject);
+              final Uri fileUri = getFileUriAndSetType(draft, dir, files.getString(i), subject, i);
               if (fileUri != null) {
                 fileUris.add(fileUri);
               }
@@ -169,7 +170,7 @@ public class SocialSharing extends CordovaPlugin {
             final String dir = getDownloadDir();
             Uri fileUri = null;
             for (int i = 0; i < files.length(); i++) {
-              fileUri = getFileUriAndSetType(sendIntent, dir, files.getString(i), subject);
+              fileUri = getFileUriAndSetType(sendIntent, dir, files.getString(i), subject, i);
               if (fileUri != null) {
                 fileUris.add(fileUri);
               }
@@ -204,13 +205,21 @@ public class SocialSharing extends CordovaPlugin {
         }
 
         if (appPackageName != null) {
-          final ActivityInfo activity = getActivity(sendIntent, appPackageName);
+          String packageName = appPackageName;
+          String passedActivityName = null;
+          if (packageName.contains("/")) {
+            String[] items = appPackageName.split("/");
+            packageName = items[0];
+            passedActivityName = items[1];
+          }
+          final ActivityInfo activity = getActivity(sendIntent, packageName);
           if (activity != null) {
             if (peek) {
               callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
             } else {
               sendIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-              sendIntent.setComponent(new ComponentName(activity.applicationInfo.packageName, activity.name));
+              sendIntent.setComponent(new ComponentName(activity.applicationInfo.packageName,
+                  passedActivityName != null ? passedActivityName : activity.name));
               mycordova.startActivityForResult(plugin, sendIntent, 0);
             }
           }
@@ -226,7 +235,7 @@ public class SocialSharing extends CordovaPlugin {
     return true;
   }
 
-  private Uri getFileUriAndSetType(Intent sendIntent, String dir, String image, String subject) throws IOException {
+  private Uri getFileUriAndSetType(Intent sendIntent, String dir, String image, String subject, int nthFile) throws IOException {
     // we're assuming an image, but this can be any filetype you like
     String localImage = image;
     sendIntent.setType("image/*");
@@ -266,7 +275,8 @@ public class SocialSharing extends CordovaPlugin {
       String fileName = "file." + imgExtension;
       // if a subject was passed, use it as the filename
       if (notEmpty(subject)) {
-        fileName = sanitizeFilename(subject) + "." + imgExtension;
+        // filenames must be unique when passing in multiple files [#158]
+        fileName = sanitizeFilename(subject) + (nthFile == 0 ? "" : "_"+nthFile) + "." + imgExtension;
       }
       saveFile(Base64.decode(encodedImg, Base64.DEFAULT), dir, fileName);
       localImage = "file://" + dir + "/" + fileName;

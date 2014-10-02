@@ -24,10 +24,15 @@ CONFIG.autosave_time = 2000;
 // how far back should the undo button go
 CONFIG.translation_history_limit = 20;
 
+// version number
+CONFIG.version = '1.2';
 
 
+// HASH.myDefault="#stories/in/obs";
+CONFIG.myDefaultHash="#stories/in/obs";
 
-HASH.myDefault="#books";
+// for setting the panel close buttons before browser history is established
+// CONFIG.myDefaultTranslation="#translate/index/en/obs/01/title";
 
 
 
@@ -47,22 +52,10 @@ END OF CONFIG -- DON'T CHANGE ANYTHING BELOW
 
 
 
-$(document).ready(function(){
-	if ( isMobileDevice() ) {
-        document.addEventListener("deviceready", CONFIG.onDeviceReady, false);
-    } else {
-        CONFIG.onDeviceReady();
-    }	
-});
-
-
-
 CONFIG.onDeviceReady = function(){
 
-	// TODO BEN update the versin number
-	localStorage.version = '1.1';
-
-
+// localStorage.book, localStorage.story, and localStorage.frame set in TABS.onDeviceReady
+/*  
 	if(!localStorage.book){
 		localStorage.book = CONFIG.book;
 	}
@@ -72,6 +65,10 @@ CONFIG.onDeviceReady = function(){
 	if(!localStorage.frame){
 		localStorage.frame = CONFIG.frame;
 	}
+*/
+
+
+
 
 	
 	

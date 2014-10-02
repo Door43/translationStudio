@@ -4,8 +4,36 @@ RESOURCES.title = '';
 
 RESOURCES.home = true;
 
+RESOURCES.trackHistory = null;
+RESOURCES.maxHistory = null;
+
+// close resource notes panel
+$(document).on('click', 'a#close_resources', function(e){
+	
+	
+	$('#translation_resources_panel').addClass('hide_right');
+
+	setTimeout(function(){
+		$('#translation_resources_panel').hide();
+	}, 600);
+	
+	// remove icon swell (needed when the left panel is still open)
+	setTimeout(function(){
+		$('main header nav a#resource_notes').removeClass('swell');
+	}, 1000);
+	
+});
+
 
 RESOURCES.at = function(){
+
+	$('main header nav a#resource_notes').addClass('swell');
+
+
+	$('textarea, input').trigger('blur');
+
+	// disable translation textarea
+	$('#center_panel form#translation textarea#frame_text').attr('disabled', 'true');
 
 	$('main').removeClass('focus_translation_form').addClass('focus_resources').removeClass('focus_tabs');
 	
@@ -75,7 +103,7 @@ RESOURCES.at = function(){
 				
 				$("#translation_resources_panel a:contains('Up')").remove();
 				
-			}, 50)
+			}, 50);
 		
 
 			msg    = null; // free up some memory
@@ -89,6 +117,13 @@ RESOURCES.at = function(){
 	
 };
 
+RESOURCES.initHistory = function(){
+	RESOURCES.trackHistory = 0;
+	RESOURCES.maxHistory = RESOURCES.trackHistory;
+	$('a#resource_forward').css('opacity','.5').attr("disabled","disabled");
+	$('a#resource_back').css('opacity','.5').attr("disabled","disabled");
+	$('a#resource_home').css('opacity','.5').attr("disabled","disabled");
+};
 
 
 
@@ -96,7 +131,14 @@ $(document).on('click','#translation_resources_panel .scroll a.wikilink1', funct
 	
 	
 	e.preventDefault();
-	
+
+	RESOURCES.trackHistory++;
+	RESOURCES.maxHistory = RESOURCES.trackHistory;
+	$('a#resource_forward').css('opacity','.5').attr("disabled","disabled");
+	$('a#resource_back').css('opacity','1').removeAttr('disabled');
+	$('a#resource_home').css('opacity','1').removeAttr('disabled');
+
+
 	var tis = $(this);
 	
 	var href = tis.attr('href');
@@ -110,5 +152,75 @@ $(document).on('click','#translation_resources_panel .scroll a.wikilink1', funct
 	
 	document.location.hash = href;
 	
+
 });
+
+
+$(document).on('click', 'a#resource_back', function(e){
+
+
+	e.preventDefault();
+
+
+	if ($(this).attr('disabled') != undefined) {
+		// do nothing
+	}
+    else{
+
+		RESOURCES.trackHistory--;
+		
+		window.history.back();
+		
+		$('a#resource_forward').css('opacity','1').removeAttr('disabled');
+		if(RESOURCES.trackHistory == 0){
+			$('a#resource_back').css('opacity','.5').attr("disabled","disabled");
+		}
+    }
+
+});
+
+$(document).on('click', 'a#resource_forward', function(e){
+	e.preventDefault();
+	
+	if ($(this).attr('disabled') != undefined) {
+		// do nothing
+	}
+    else{
+
+		$('a#resource_back').css('opacity','1').removeAttr('disabled');
+		$('a#resource_home').css('opacity','1').removeAttr('disabled');
+		
+		RESOURCES.trackHistory++;
+	
+		window.history.forward();
+	
+		if(RESOURCES.trackHistory == RESOURCES.maxHistory){
+			$('a#resource_forward').css('opacity','.5').attr("disabled","disabled");	
+		}
+    	
+    }
+
+});
+
+
+$(document).on('click', 'a#resource_home', function(e){
+	
+	e.preventDefault();
+
+	if ($(this).attr('disabled') != undefined) {
+		// do nothing
+	}
+    else{
+		$('a#resource_home').css('opacity','.5').attr("disabled","disabled");
+		$('a#resource_back').css('opacity','.5').attr("disabled","disabled");
+		$('a#resource_forward').css('opacity','1').removeAttr('disabled');
+			
+		var num = -1*(RESOURCES.trackHistory);
+		RESOURCES.trackHistory = 0;
+		window.history.go(num);
+    	
+    }
+
+});
+
 

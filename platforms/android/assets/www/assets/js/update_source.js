@@ -15,49 +15,41 @@ UPDATE.init = function(){
 			//console.log(msg.date_modified);
 			//console.log(msg);
 			
-			
 			// see if we need to update the DB
 			//20140424
 			if( (typeof localStorage.date_modified_en == 'undefined' ) || localStorage.date_modified_en < msg.date_modified ){
 			
-			
 				localStorage.date_modified_en = msg.date_modified;
-			
-			
 				console.log('update DB');
 				
-				
-				DB.selectLanguageFromString('en', function(data){
-
+				// DB.selectLanguageFromString('en', function(data){
+				DB.selectSourceLanguage(function(data){
 				
 					// this language exists
+/*
 					if(data.length){
-						
-						
 						// remove old source
 						DB.removeSourceForLanguage(data[0].language_id, function(){
-							
-							
 							UPDATE.source(data[0].language_id, msg);
-
-
 						});
-						
-						
+					}
+*/
+					console.log('DB.selectSourceLanguage count: '+Object.keys(data).length);
+					if(Object.keys(data).length){
+						console.log('source language exixts');
+						// remove old source
+						console.log('remove old source - language_id: '+data.language.id);
+						DB.removeSourceForLanguage(data.language_id, function(){
+							UPDATE.source(data.language_id, msg);
+						});
 					}
 					
 					// this language does not exist
 					else {
-						
 						// insert language
-						DB.insertLanguage('en', '1', function(language, language_id){
-						
-						
+						DB.insertLanguage('English', 'en', '1', function(language, language_id){
 							UPDATE.source(language_id, msg);
-							
-						
 						});
-						
 					}	
 				
 				});  // insertLanguage
